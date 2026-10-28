@@ -1,0 +1,24 @@
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+const $=sel=>document.querySelector(sel);
+const status=msg=>$('#status').textContent=msg||'';
+const url=window.NICK_SUPABASE_URL,key=window.NICK_SUPABASE_ANON_KEY;
+if(!url?.startsWith('https://')||!key||key.startsWith('COLE_')){
+ status('Configure primeiro o arquivo config.js com a URL e a chave pública (anon/publishable) do Supabase.');
+ $('#signIn').disabled=true;
+}else{
+ const db=createClient(url,key);let current=[];
+ async function check(){const {data:{user}}=await db.auth.getUser();if(!user){$('#login').hidden=false;$('#dashboard').hidden=true;return;}
+ const {data:admin,error}=await db.from('admin_users').select('user_id').eq('user_id',user.id).maybeSingle();
+ if(error||!admin){await db.auth.signOut();status('Este usuário ainda não foi autorizado como administrador no Supabase.');$('#login').hidden=false;$('#dashboard').hidden=true;return;}
+ $('#login').hidden=true;$('#dashboard').hidden=false;status('');await load();}
+ $('#signIn').addEventListener('click',async()=>{status('Entrando...');const {error}=await db.auth.signInWithPassword({email:$('#email').value.trim(),password:$('#password').value});if(error){status('Não foi possível entrar: '+error.message);return;}await check();});
+ $('#signOut').addEventListener('click',async()=>{await db.auth.signOut();await check();});
+ async function load(){const {data,error}=await db.from('produtos').select('*').order('criado_em',{ascending:false});if(error){status('Erro ao listar produtos: '+error.message);return;}current=data||[];const el=$('#items');el.replaceChildren();if(!current.length){el.textContent='Nenhum produto cadastrado ainda.';return;}for(const p of current){const wrap=document.createElement('div');wrap.className='item';if(p.imagem_url){const img=document.createElement('img');img.src=p.imagem_url;img.alt='';wrap.append(img);}const info=document.createElement('div');info.className='item-info';const strong=document.createElement('strong');strong.textContent=p.nome;const small=document.createElement('small');small.textContent=(p.preco!=null?Number(p.preco).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}):'Sem preço')+' • '+(p.ativo?'Visível':'Oculto');info.append(strong,small);wrap.append(info);const b=document.createElement('button');b.textContent='Editar';b.addEventListener('click',()=>edit(p));const del=document.createElement('button');del.className='secondary';del.textContent='Excluir';del.addEventListener('click',()=>remove(p));wrap.append(b,del);el.append(wrap);}}
+ function clear(){$('#editor').reset();$('#itemId').value='';$('#formTitle').textContent='Adicionar produto';$('#active').checked=true;}
+ function edit(p){$('#itemId').value=p.id;$('#name').value=p.nome;$('#category').value=p.categoria||'';$('#description').value=p.descricao||'';$('#price').value=p.preco==null?'':String(p.preco).replace('.',',');$('#active').checked=p.ativo;$('#formTitle').textContent='Editar produto';$('#editor').scrollIntoView({behavior:'smooth'});}
+ $('#reset').addEventListener('click',clear);
+ $('#editor').addEventListener('submit',async(e)=>{e.preventDefault();const button=$('#save');button.disabled=true;status('Salvando produto...');try{const old=current.find(p=>p.id===$('#itemId').value);let image_url=old?.imagem_url||null;const file=$('#photo').files[0];if(file){if(!['image/jpeg','image/png','image/webp'].includes(file.type)||file.size>5*1024*1024)throw Error('Escolha uma foto JPG, PNG ou WebP de até 5 MB.');const ext=file.type==='image/png'?'png':file.type==='image/webp'?'webp':'jpg';const path=crypto.randomUUID()+'.'+ext;const {error:upError}=await db.storage.from('produtos').upload(path,file,{contentType:file.type,upsert:false});if(upError)throw upError;image_url=db.storage.from('produtos').getPublicUrl(path).data.publicUrl;}
+ const raw=$('#price').value.trim().replace(',','.');const price=raw===''?null:Number(raw);if(price!==null&&(!Number.isFinite(price)||price<0))throw Error('Preço inválido.');const product={nome:$('#name').value.trim(),categoria:$('#category').value.trim()||'Personalizados',descricao:$('#description').value.trim()||null,preco:price,imagem_url:image_url,ativo:$('#active').checked};let result;if(old)result=await db.from('produtos').update(product).eq('id',old.id);else result=await db.from('produtos').insert(product);if(result.error)throw result.error;clear();await load();status('Produto salvo! Atualize a página da loja para visualizar.');}catch(err){status('Não foi possível salvar: '+err.message);}finally{button.disabled=false;}});
+ async function remove(p){if(!confirm('Excluir o produto "'+p.nome+'"?'))return;const {error}=await db.from('produtos').delete().eq('id',p.id);if(error){status(error.message);return;}status('Produto excluído.');await load();}
+ await check();
+}
