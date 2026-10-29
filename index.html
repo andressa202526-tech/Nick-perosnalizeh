@@ -67,7 +67,7 @@
 .hero-arrow:hover{background:#fff}
 .hero-prev{left:14px}.hero-next{right:14px}
 .hero-dots{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:10px;z-index:3}
-.hero-dot{width:10px;height:10px;padding:0;border:0;border-radius:50%;background:#d6a6bd;cursor:pointer}
+.hero-dot{width:10px;height:10px;padding:0;border:0;border-radius:50%;background:#d6a6bd;}
 .hero-dot.is-active{width:29px;border-radius:9px;background:#c82e70}
 .hero-carousel .hero-inner{padding-bottom:60px}
 @keyframes heroFade{from{opacity:.1;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
@@ -114,8 +114,8 @@
     </article>
     <article class="hero-slide christmas-slide" aria-hidden="true" inert>
       <div class="wrap hero-inner">
-        <div><span class="eyebrow">🎄 Edição especial • Natal 2026</span><h1>O Natal fica mais especial com <em>carinho!</em></h1><p>Canecas, camisetas, bodies e lembrancinhas personalizados para presentear quem você ama.</p><div class="chips"><span>🎁 Presentes especiais</span><span>♡ Feitos para você</span></div><a href="#natal" class="btn">CONHEÇA A COLEÇÃO DE NATAL ↗</a></div>
-        <div class="hero-img"><img src="natal-2026.webp" data-fallback="hero.webp" alt="Coleção de Natal da Nick Personalizeh"><div class="hero-sticker">Natal com amor ♡</div></div>
+        <div><span class="eyebrow">✨ NOVIDADE NA NICK • NATAL 2026 🎄</span><h1>Novidade! O Natal chegou na <em>Nick!</em></h1><p>Conheça nossa coleção especial de Natal: canecas, camisetas, bodies e lembrancinhas para presentear com carinho!</p><div class="chips"><span>🎁 Presentes especiais</span><span>♡ Feitos para você</span></div><a href="#natal" class="btn">CONHEÇA A COLEÇÃO DE NATAL ↗</a></div>
+        <div class="hero-img"><img src="natal-2026.webp" data-fallback="natal-canecas.webp" alt="Coleção de Natal da Nick Personalizeh"><div class="hero-sticker">Natal com amor ♡</div></div>
       </div>
     </article>
     <article class="hero-slide print-slide" aria-hidden="true" inert>
@@ -125,12 +125,10 @@
       </div>
     </article>
   </div>
-  <button type="button" class="hero-arrow hero-prev" id="heroPrev" aria-label="Banner anterior">‹</button>
-  <button type="button" class="hero-arrow hero-next" id="heroNext" aria-label="Próximo banner">›</button>
-  <div class="hero-dots" id="heroDots" aria-label="Escolher banner">
-    <button type="button" class="hero-dot is-active" data-slide="0" aria-label="Mostrar destaque inicial" aria-current="true"></button>
-    <button type="button" class="hero-dot" data-slide="1" aria-label="Mostrar destaque de Natal"></button>
-    <button type="button" class="hero-dot" data-slide="2" aria-label="Mostrar destaque de gráfica rápida"></button>
+  <div class="hero-dots" id="heroDots" aria-hidden="true">
+    <span class="hero-dot is-active"></span>
+    <span class="hero-dot"></span>
+    <span class="hero-dot"></span>
   </div>
 </section>
 <section class="section" id="produtos"><div class="wrap"><div class="section-head"><span class="eyebrow">Feitos para você ♡</span><h2>Nossos personalizados</h2><p>Escolha seus favoritos, confira os valores e peça pelo WhatsApp!</p></div><div class="product-grid" id="products"></div><div class="special">🎀 <strong>Para pedidos em quantidade, consulte valores especiais.</strong> Personalização, modelo e disponibilidade sujeitos à confirmação.</div></div></section>
@@ -225,11 +223,10 @@ document.querySelector('#resumeForm').addEventListener('submit', function(event)
  photo.onerror=function(){index++;if(index<paths.length){photo.src=paths[index]}else{photo.alt='Foto da Nicolly não encontrada: confira o nome no GitHub';photo.style.display='none'}};
 })();
 
-// Destaques do início: troca automática e controles manuais.
+// Banners mudam sozinhos a cada 4,5 segundos; indicadores são apenas visuais.
 (function(){
   const slides=[...document.querySelectorAll('.hero-slide')];
   const dots=[...document.querySelectorAll('.hero-dot')];
-  const carousel=document.querySelector('.hero-carousel');
   let active=0;
   let timer;
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -243,21 +240,12 @@ document.querySelector('#resumeForm').addEventListener('submit', function(event)
     });
     dots.forEach((dot,i)=>{
       dot.classList.toggle('is-active',i===active);
-      if(i===active)dot.setAttribute('aria-current','true');
-      else dot.removeAttribute('aria-current');
     });
   }
   function restart(){
     clearInterval(timer);
-    if(!reduced && !document.hidden) timer=setInterval(()=>showSlide(active+1),5500);
+    if(!reduced && !document.hidden) timer=setInterval(()=>showSlide(active+1),4500);
   }
-  document.getElementById('heroPrev').addEventListener('click',()=>{showSlide(active-1);restart()});
-  document.getElementById('heroNext').addEventListener('click',()=>{showSlide(active+1);restart()});
-  dots.forEach((dot,i)=>dot.addEventListener('click',()=>{showSlide(i);restart()}));
-  carousel.addEventListener('mouseenter',()=>clearInterval(timer));
-  carousel.addEventListener('mouseleave',restart);
-  carousel.addEventListener('focusin',()=>clearInterval(timer));
-  carousel.addEventListener('focusout',()=>{setTimeout(()=>{if(!carousel.contains(document.activeElement))restart()},0)});
   document.addEventListener('visibilitychange',restart);
   document.querySelectorAll('.hero-slide img[data-fallback]').forEach(img=>{
     img.addEventListener('error',function(){if(this.dataset.fallback){this.src=this.dataset.fallback;delete this.dataset.fallback}});
