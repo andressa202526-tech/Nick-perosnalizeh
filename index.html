@@ -28,9 +28,51 @@
 @media(max-width:1050px){.links{gap:9px;font-size:11px}}
 @media(max-width:880px){.tile-grid{grid-template-columns:repeat(2,1fr)}.links{display:none;position:absolute;top:72px;left:0;right:0;background:#fff8fb;flex-direction:column;padding:14px 5%;box-shadow:var(--shadow)}.links.open{display:flex}.menu-btn{display:block}}
 @media(max-width:650px){.extra-cols,.tile-grid{grid-template-columns:1fr}.extra-form{padding:19px}.extra-section{padding:46px 0}}
+
+/* Menu simplificado: links principais em uma linha, demais no submenu */
+.header .nav{max-width:1200px;min-height:76px}
+.header .logo{flex-shrink:0}
+.header .logo img{width:125px;max-height:62px}
+.header .links{gap:17px;flex-wrap:nowrap;white-space:nowrap}
+.header .links > a{white-space:nowrap}
+.header .nav > .btn{flex-shrink:0;padding:12px 17px;white-space:nowrap}
+.nav-more{position:relative}
+.nav-more summary{list-style:none;cursor:pointer;color:var(--ink);padding:10px 8px;font-weight:800;user-select:none}
+.nav-more summary::-webkit-details-marker{display:none}
+.nav-more summary:hover,.nav-more[open] summary{color:var(--hot)}
+.nav-more summary span{font-size:16px;margin-left:4px}
+.nav-dropdown{position:absolute;right:0;top:calc(100% + 9px);width:238px;background:white;border:1px solid var(--border);border-radius:18px;padding:10px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:1px;z-index:50;white-space:normal}
+.nav-dropdown a{display:block;padding:10px 12px;border-radius:10px;font-size:13px;line-height:1.25;white-space:normal}
+.nav-dropdown a:hover{background:var(--pale)}
+@media(max-width:1070px){.header .nav>.btn{display:none}}
+@media(max-width:720px){
+ .header .links{gap:2px;align-items:stretch;white-space:normal}
+ .header .links > a{width:100%;padding:11px 12px}
+ .nav-more{width:100%}
+ .nav-more summary{padding:12px}
+ .nav-dropdown{position:static;width:100%;box-shadow:none;background:var(--pale);border-radius:12px;padding:6px;margin:0 0 8px}
+ .nav-dropdown a{padding:10px 15px}
+}
+.links .natal-link{color:#b52c65;font-weight:800;white-space:nowrap}.links .natal-link:hover{color:#df367a}
 </style></head><body>
 <div class="announce">💗 Personalizados feitos com carinho em Biguaçu · SC</div>
-<header class="header"><div class="wrap nav"><a href="#inicio" class="logo"><img src="logo.png" alt="Nick Personalizeh"></a><nav id="menu" class="links"><a href="#inicio">Início</a><a href="#produtos">Produtos</a><a href="#grafica">Gráfica Rápida</a><a href="#orcamento">Monte seu orçamento</a><a href="#curriculo">Faça seu currículo</a><a href="#galeria">Galeria</a><a href="#avaliacoes">Avaliações</a><a href="#como-encomendar">Como encomendar</a><a href="#natal">Natal 2026</a><a href="#sobre">Sobre nós</a><a href="#empresas">Empresas e igrejas</a><a href="#faq">Dúvidas</a><a href="#contato">Contato</a></nav><a class="btn" href="https://wa.me/5548999641422" target="_blank" rel="noopener">✆ Faça seu orçamento</a><button class="menu-btn" id="menuBtn" aria-label="Abrir menu" aria-expanded="false">☰</button></div></header>
+<header class="header"><div class="wrap nav"><a href="#inicio" class="logo"><img src="logo.png" alt="Nick Personalizeh"></a><nav id="menu" class="links" aria-label="Navegação principal">
+<a href="#inicio">Início</a>
+<a href="#natal" class="natal-link">NATAL 🎄</a>
+<a href="#sobre">Sobre nós</a>
+<a href="#produtos">Produtos</a>
+<a href="#grafica">Gráfica Rápida</a>
+<details class="nav-more" id="moreMenu"><summary>Mais <span aria-hidden="true">⌄</span></summary>
+<div class="nav-dropdown">
+<a href="#curriculo">Faça seu currículo</a>
+<a href="#orcamento">Monte seu orçamento</a>
+<a href="#galeria">Galeria de trabalhos</a>
+<a href="#avaliacoes">Avaliações</a>
+<a href="#como-encomendar">Como encomendar</a>
+<a href="#empresas">Empresas e igrejas</a>
+<a href="#faq">Perguntas frequentes</a>
+<a href="#contato">Contato</a>
+</div></details></nav><a class="btn" href="https://wa.me/5548999641422" target="_blank" rel="noopener">✆ Faça seu orçamento</a><button class="menu-btn" id="menuBtn" aria-label="Abrir menu" aria-expanded="false">☰</button></div></header>
 <main>
 <section class="hero" id="inicio"><div class="wrap hero-inner"><div><span class="eyebrow">✨ Bem-vindo à Nick Personalizeh</span><h1>Seu momento mais especial se torna <em>único!</em></h1><p>Transformamos suas ideias em presentes, lembranças e produtos personalizados cheios de carinho.</p><div class="chips"><span>♡ Personalizados</span><span>♡ Gráfica rápida</span><span>♡ Brindes e lembranças</span></div><a href="#produtos" class="btn">CONHEÇA NOSSOS PRODUTOS ↗</a></div><div class="hero-img"><img src="hero.webp" alt="Produtos personalizados Nick Personalizeh"><div class="hero-sticker">Feito com carinho! ♡</div></div></div></section>
 <section class="section" id="produtos"><div class="wrap"><div class="section-head"><span class="eyebrow">Feitos para você ♡</span><h2>Nossos personalizados</h2><p>Escolha seus favoritos, confira os valores e peça pelo WhatsApp!</p></div><div class="product-grid" id="products"></div><div class="special">🎀 <strong>Para pedidos em quantidade, consulte valores especiais.</strong> Personalização, modelo e disponibilidade sujeitos à confirmação.</div></div></section>
@@ -96,7 +138,7 @@ const christmas=[['natal-bolas.webp','Bolas acrílicas com foto'],['natal-camise
 document.querySelector('#products').innerHTML=products.map(p=>`<article class="product-card"><img src="${p.img}" onerror="this.onerror=null;this.src='assets/${p.img}'" loading="lazy" alt="${p.name}"><div class="product-content"><h3>${p.name}</h3><p>${p.desc}</p><div class="price-list">${p.rows.map(r=>`<div class="price-row"><span>${r[0]}</span><strong>${r[1]}</strong></div>`).join('')}</div><a class="btn" href="${p.link||wa(p.name)}" ${p.link?'':'target="_blank" rel="noopener"'}>${p.link?'VER SERVIÇOS':'QUERO ENCOMENDAR ↗'}</a></div></article>`).join('');
 document.querySelector('#services').innerHTML=services.map(s=>`<article class="service"><div class="symbol">${s.icon}</div><h3>${s.title}</h3>${s.rows.map(r=>`<div class="price-row"><span>${r[0]}</span><strong>${r[1]}</strong></div>`).join('')}${s.note?`<small>${s.note}</small>`:''}<a class="btn" href="${wa(s.title)}" target="_blank" rel="noopener">PEDIR PELO WHATSAPP ↗</a></article>`).join('');
 document.querySelector('#natalGrid').innerHTML=christmas.map(([img,name])=>`<article class="natal-card"><img src="assets/${img}" onerror="this.onerror=null;this.style.display='none'" loading="lazy" alt="${name}"><h3>${name}</h3><a class="btn" href="${wa(name)}" target="_blank" rel="noopener">CONSULTAR ↗</a></article>`).join('');
-const menu=document.querySelector('#menu'),menuBtn=document.querySelector('#menuBtn');menuBtn.onclick=()=>{const open=menu.classList.toggle('open');menuBtn.textContent=open?'×':'☰';menuBtn.setAttribute('aria-expanded',open)};menu.querySelectorAll('a').forEach(a=>a.onclick=()=>{menu.classList.remove('open');menuBtn.textContent='☰';menuBtn.setAttribute('aria-expanded','false')});document.querySelector('#year').textContent=new Date().getFullYear();
+const menu=document.querySelector('#menu'),menuBtn=document.querySelector('#menuBtn');menuBtn.onclick=()=>{const open=menu.classList.toggle('open');menuBtn.textContent=open?'×':'☰';menuBtn.setAttribute('aria-expanded',open)};menu.querySelectorAll('a').forEach(a=>a.onclick=()=>{menu.classList.remove('open');menuBtn.textContent='☰';menuBtn.setAttribute('aria-expanded','false');document.querySelector('#moreMenu').open=false});document.querySelector('#year').textContent=new Date().getFullYear();
 
 
 // Orçamentos: dados somente enviados ao WhatsApp após ação da pessoa.
