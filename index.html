@@ -62,7 +62,7 @@
 .hero-slide.is-active{display:block}
 .hero-slide.christmas-slide{background:radial-gradient(circle at 84% 20%,#ffcfdd 0,transparent 47%),linear-gradient(120deg,#fff7fa,#f7eaf0 70%,#e7f5eb)}
 .hero-slide.print-slide{background:radial-gradient(circle at 80% 23%,#c8ecd9 0,transparent 48%),linear-gradient(120deg,#fff4f9,#e9f8ee)}
-.hero-slide.christmas-slide .hero-sticker{font-size:23px}
+.hero-slide.christmas-slide .hero-sticker{font-size:23px}.christmas-showcase{display:grid;grid-template-columns:1.05fr .95fr;gap:14px;align-items:stretch;width:100%;height:360px}.christmas-main,.christmas-mini{position:relative;border-radius:28px;overflow:hidden;border:6px solid #ffffff80;box-shadow:var(--shadow);background:#ffeaf1}.christmas-main img,.christmas-mini img{width:100%;height:100%;object-fit:cover}.christmas-side{display:grid;grid-template-rows:1fr 1fr;gap:14px}.christmas-mini span{position:absolute;left:10px;bottom:10px;background:#fff8fbdd;color:#b72e69;font-size:11px;font-weight:800;padding:7px 10px;border-radius:999px}.christmas-main span{position:absolute;left:14px;bottom:14px;background:#fff8fbdd;color:#b72e69;font-size:12px;font-weight:800;padding:8px 12px;border-radius:999px}
 .hero-arrow{position:absolute;z-index:2;top:48%;width:42px;height:42px;border:1px solid #f3c8da;border-radius:50%;background:#ffffffdf;color:#b82b6c;font:30px/1 Arial,sans-serif;cursor:pointer;box-shadow:0 7px 20px #9e3f6a21;display:grid;place-items:center}
 .hero-arrow:hover{background:#fff}
 .hero-prev{left:14px}.hero-next{right:14px}
@@ -115,7 +115,25 @@
     <article class="hero-slide christmas-slide" aria-hidden="true" inert>
       <div class="wrap hero-inner">
         <div><span class="eyebrow">✨ NOVIDADE NA NICK • NATAL 2026 🎄</span><h1>Novidade! O Natal chegou na <em>Nick!</em></h1><p>Conheça nossa coleção especial de Natal: canecas, camisetas, bodies e lembrancinhas para presentear com carinho!</p><div class="chips"><span>🎁 Presentes especiais</span><span>♡ Feitos para você</span></div><a href="#natal" class="btn">CONHEÇA A COLEÇÃO DE NATAL ↗</a></div>
-        <div class="hero-img"><img id="heroNatalImg" src="assets/natal-2026.webp" alt="Novidades de Natal da Nick Personalizeh"><div class="hero-sticker">Natal com amor ♡</div></div>
+        <div class="hero-img">
+          <div class="christmas-showcase">
+            <div class="christmas-main">
+              <img id="heroNatalMain" src="assets/natal-canecas.webp" alt="Canecas natalinas da Nick Personalizeh">
+              <span>Canecas natalinas</span>
+            </div>
+            <div class="christmas-side">
+              <div class="christmas-mini">
+                <img id="heroNatalMini1" src="assets/natal-bolas.webp" alt="Bolas acrílicas com foto">
+                <span>Bolas com foto</span>
+              </div>
+              <div class="christmas-mini">
+                <img id="heroNatalMini2" src="assets/natal-body.webp" alt="Body de Natal personalizado">
+                <span>Body de Natal</span>
+              </div>
+            </div>
+          </div>
+          <div class="hero-sticker">Natal com amor ♡</div>
+        </div>
       </div>
     </article>
     <article class="hero-slide print-slide" aria-hidden="true" inert>
@@ -195,7 +213,9 @@ document.querySelector('#products').innerHTML=products.map(p=>`<article class="p
 document.querySelector('#services').innerHTML=services.map(s=>`<article class="service"><div class="symbol">${s.icon}</div><h3>${s.title}</h3>${s.rows.map(r=>`<div class="price-row"><span>${r[0]}</span><strong>${r[1]}</strong></div>`).join('')}${s.note?`<small>${s.note}</small>`:''}<a class="btn" href="${wa(s.title)}" target="_blank" rel="noopener">PEDIR PELO WHATSAPP ↗</a></article>`).join('');
 document.querySelector('#natalGrid').innerHTML=christmas.map(([img,name])=>`<article class="natal-card"><img src="assets/${img}" onerror="this.onerror=null;this.style.display='none'" loading="lazy" alt="${name}"><h3>${name}</h3><a class="btn" href="${wa(name)}" target="_blank" rel="noopener">CONSULTAR ↗</a></article>`).join('');
 function setImageFromCandidates(selector,candidates){const el=document.querySelector(selector);if(!el)return;let i=0;const testNext=()=>{if(i>=candidates.length)return;const src=candidates[i++];const test=new Image();test.onload=()=>{el.src=src;el.style.display='block';};test.onerror=testNext;test.src=src;};testNext();}
-setImageFromCandidates('#heroNatalImg',['assets/natal-2026.webp','natal-2026.webp','assets/natal-canecas.webp','natal-canecas.webp','assets/natal-bolas.webp','natal-bolas.webp','assets/natal-body.webp','natal-body.webp','hero.webp']);
+setImageFromCandidates('#heroNatalMain',['assets/natal-canecas.webp','natal-canecas.webp','assets/natal-camisetas.webp','natal-camisetas.webp','assets/natal-2026.webp','natal-2026.webp','hero.webp']);
+setImageFromCandidates('#heroNatalMini1',['assets/natal-bolas.webp','natal-bolas.webp','assets/natal-chaveiros.webp','natal-chaveiros.webp','assets/natal-2026.webp','natal-2026.webp','hero.webp']);
+setImageFromCandidates('#heroNatalMini2',['assets/natal-body.webp','natal-body.webp','assets/natal-infantil.webp','natal-infantil.webp','assets/natal-2026.webp','natal-2026.webp','hero.webp']);
 setImageFromCandidates('#natalSectionImg',['assets/natal-2026.webp','natal-2026.webp','assets/natal-canecas.webp','natal-canecas.webp','assets/natal-bolas.webp','natal-bolas.webp','assets/natal-body.webp','natal-body.webp','hero.webp']);
 const menu=document.querySelector('#menu'),menuBtn=document.querySelector('#menuBtn');menuBtn.onclick=()=>{const open=menu.classList.toggle('open');menuBtn.textContent=open?'×':'☰';menuBtn.setAttribute('aria-expanded',open)};menu.querySelectorAll('a').forEach(a=>a.onclick=()=>{menu.classList.remove('open');menuBtn.textContent='☰';menuBtn.setAttribute('aria-expanded','false');document.querySelector('#moreMenu').open=false});document.querySelector('#year').textContent=new Date().getFullYear();
 
