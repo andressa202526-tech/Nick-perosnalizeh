@@ -54,6 +54,25 @@
  .nav-dropdown a{padding:10px 15px}
 }
 .links .natal-link{color:#b52c65;font-weight:800;white-space:nowrap}.links .natal-link:hover{color:#df367a}
+
+/* Banner rotativo do início */
+.hero-carousel{position:relative;isolation:isolate}
+.hero-slides{position:relative}
+.hero-slide{display:none;animation:heroFade .5s ease both}
+.hero-slide.is-active{display:block}
+.hero-slide.christmas-slide{background:radial-gradient(circle at 84% 20%,#ffcfdd 0,transparent 47%),linear-gradient(120deg,#fff7fa,#f7eaf0 70%,#e7f5eb)}
+.hero-slide.print-slide{background:radial-gradient(circle at 80% 23%,#c8ecd9 0,transparent 48%),linear-gradient(120deg,#fff4f9,#e9f8ee)}
+.hero-slide.christmas-slide .hero-sticker{font-size:23px}
+.hero-arrow{position:absolute;z-index:2;top:48%;width:42px;height:42px;border:1px solid #f3c8da;border-radius:50%;background:#ffffffdf;color:#b82b6c;font:30px/1 Arial,sans-serif;cursor:pointer;box-shadow:0 7px 20px #9e3f6a21;display:grid;place-items:center}
+.hero-arrow:hover{background:#fff}
+.hero-prev{left:14px}.hero-next{right:14px}
+.hero-dots{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:10px;z-index:3}
+.hero-dot{width:10px;height:10px;padding:0;border:0;border-radius:50%;background:#d6a6bd;cursor:pointer}
+.hero-dot.is-active{width:29px;border-radius:9px;background:#c82e70}
+.hero-carousel .hero-inner{padding-bottom:60px}
+@keyframes heroFade{from{opacity:.1;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:720px){.hero-arrow{top:auto;bottom:9px;width:34px;height:34px;font-size:24px}.hero-prev{left:18px}.hero-next{right:18px}.hero-carousel .hero-inner{padding-bottom:66px}.hero-dots{bottom:22px}}
+@media(prefers-reduced-motion:reduce){.hero-slide{animation:none}}
 </style><style>
 /* Depoimentos reais - Nick Personalizeh */
 .review-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:28px}
@@ -85,7 +104,35 @@
 <a href="#contato">Contato</a>
 </div></details></nav><a class="btn" href="https://wa.me/5548999641422" target="_blank" rel="noopener">✆ Faça seu orçamento</a><button class="menu-btn" id="menuBtn" aria-label="Abrir menu" aria-expanded="false">☰</button></div></header>
 <main>
-<section class="hero" id="inicio"><div class="wrap hero-inner"><div><span class="eyebrow">✨ Bem-vindo à Nick Personalizeh</span><h1>Seu momento mais especial se torna <em>único!</em></h1><p>Transformamos suas ideias em presentes, lembranças e produtos personalizados cheios de carinho.</p><div class="chips"><span>♡ Personalizados</span><span>♡ Gráfica rápida</span><span>♡ Brindes e lembranças</span></div><a href="#produtos" class="btn">CONHEÇA NOSSOS PRODUTOS ↗</a></div><div class="hero-img"><img src="hero.webp" alt="Produtos personalizados Nick Personalizeh"><div class="hero-sticker">Feito com carinho! ♡</div></div></div></section>
+<section class="hero hero-carousel" id="inicio" aria-label="Destaques da Nick Personalizeh">
+  <div class="hero-slides" id="heroSlides" aria-live="off">
+    <article class="hero-slide is-active" aria-hidden="false">
+      <div class="wrap hero-inner">
+        <div><span class="eyebrow">✨ Bem-vindo à Nick Personalizeh</span><h1>Seu momento mais especial se torna <em>único!</em></h1><p>Transformamos suas ideias em presentes, lembranças e produtos personalizados cheios de carinho.</p><div class="chips"><span>♡ Personalizados</span><span>♡ Gráfica rápida</span><span>♡ Brindes e lembranças</span></div><a href="#produtos" class="btn">CONHEÇA NOSSOS PRODUTOS ↗</a></div>
+        <div class="hero-img"><img src="hero.webp" alt="Produtos personalizados Nick Personalizeh"><div class="hero-sticker">Feito com carinho! ♡</div></div>
+      </div>
+    </article>
+    <article class="hero-slide christmas-slide" aria-hidden="true" inert>
+      <div class="wrap hero-inner">
+        <div><span class="eyebrow">🎄 Edição especial • Natal 2026</span><h1>O Natal fica mais especial com <em>carinho!</em></h1><p>Canecas, camisetas, bodies e lembrancinhas personalizados para presentear quem você ama.</p><div class="chips"><span>🎁 Presentes especiais</span><span>♡ Feitos para você</span></div><a href="#natal" class="btn">CONHEÇA A COLEÇÃO DE NATAL ↗</a></div>
+        <div class="hero-img"><img src="natal-2026.webp" data-fallback="hero.webp" alt="Coleção de Natal da Nick Personalizeh"><div class="hero-sticker">Natal com amor ♡</div></div>
+      </div>
+    </article>
+    <article class="hero-slide print-slide" aria-hidden="true" inert>
+      <div class="wrap hero-inner">
+        <div><span class="eyebrow">💗 Gráfica Rápida • Nick Personalizeh</span><h1>Suas ideias ganham <em>vida!</em></h1><p>Impressões, currículos, adesivos e materiais para seus projetos. Confira nossos serviços e valores.</p><div class="chips"><span>♡ Impressões</span><span>♡ Currículos</span><span>♡ Papel fotográfico</span></div><a href="#grafica" class="btn">CONHEÇA A GRÁFICA RÁPIDA ↗</a></div>
+        <div class="hero-img"><img src="grafica.webp" alt="Impressões e serviços de gráfica rápida"><div class="hero-sticker">Do seu jeito ♡</div></div>
+      </div>
+    </article>
+  </div>
+  <button type="button" class="hero-arrow hero-prev" id="heroPrev" aria-label="Banner anterior">‹</button>
+  <button type="button" class="hero-arrow hero-next" id="heroNext" aria-label="Próximo banner">›</button>
+  <div class="hero-dots" id="heroDots" aria-label="Escolher banner">
+    <button type="button" class="hero-dot is-active" data-slide="0" aria-label="Mostrar destaque inicial" aria-current="true"></button>
+    <button type="button" class="hero-dot" data-slide="1" aria-label="Mostrar destaque de Natal"></button>
+    <button type="button" class="hero-dot" data-slide="2" aria-label="Mostrar destaque de gráfica rápida"></button>
+  </div>
+</section>
 <section class="section" id="produtos"><div class="wrap"><div class="section-head"><span class="eyebrow">Feitos para você ♡</span><h2>Nossos personalizados</h2><p>Escolha seus favoritos, confira os valores e peça pelo WhatsApp!</p></div><div class="product-grid" id="products"></div><div class="special">🎀 <strong>Para pedidos em quantidade, consulte valores especiais.</strong> Personalização, modelo e disponibilidade sujeitos à confirmação.</div></div></section>
 <section class="section graphic" id="grafica"><div class="wrap"><div class="section-head"><span class="eyebrow">✨ Nick Personalizeh • Serviços</span><h2>Gráfica Rápida ♡</h2><p>Impressões, documentos e materiais especiais em um só lugar. Veja nossos serviços e escolha o que precisa!</p></div><div class="graphic-banner"><div><span class="eyebrow">Sua ideia impressa com carinho</span><h3>Do arquivo à impressão, cuidamos dos detalhes!</h3><p>Impressões do dia a dia, documentos, fotos, adesivos e materiais para seu negócio ou evento.</p><a class="btn" href="https://wa.me/5548999641422?text=Ol%C3%A1%21%20Quero%20um%20or%C3%A7amento%20de%20gr%C3%A1fica%20r%C3%A1pida." target="_blank" rel="noopener">PEDIR ORÇAMENTO ↗</a></div><img src="grafica.webp" alt="Serviços de gráfica rápida Nick Personalizeh"></div><div class="service-grid" id="services"></div><div class="special">💗 <strong>Precisa de outro serviço?</strong> Fazemos orçamentos para cartões de visita, folhetos, banners e muito mais. Valores podem variar conforme tamanho, papel e quantidade.</div></div></section>
 
@@ -176,5 +223,46 @@ document.querySelector('#resumeForm').addEventListener('submit', function(event)
  const paths=['nicolly.jpg','nicolly.jpeg','nicolly.png','assets/nicolly.jpg','assets/nicolly.jpeg','assets/nicolly.png'];
  let index=0;
  photo.onerror=function(){index++;if(index<paths.length){photo.src=paths[index]}else{photo.alt='Foto da Nicolly não encontrada: confira o nome no GitHub';photo.style.display='none'}};
+})();
+
+// Destaques do início: troca automática e controles manuais.
+(function(){
+  const slides=[...document.querySelectorAll('.hero-slide')];
+  const dots=[...document.querySelectorAll('.hero-dot')];
+  const carousel=document.querySelector('.hero-carousel');
+  let active=0;
+  let timer;
+  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function showSlide(index){
+    active=(index+slides.length)%slides.length;
+    slides.forEach((slide,i)=>{
+      const visible=i===active;
+      slide.classList.toggle('is-active',visible);
+      slide.setAttribute('aria-hidden',String(!visible));
+      slide.inert=!visible;
+    });
+    dots.forEach((dot,i)=>{
+      dot.classList.toggle('is-active',i===active);
+      if(i===active)dot.setAttribute('aria-current','true');
+      else dot.removeAttribute('aria-current');
+    });
+  }
+  function restart(){
+    clearInterval(timer);
+    if(!reduced && !document.hidden) timer=setInterval(()=>showSlide(active+1),5500);
+  }
+  document.getElementById('heroPrev').addEventListener('click',()=>{showSlide(active-1);restart()});
+  document.getElementById('heroNext').addEventListener('click',()=>{showSlide(active+1);restart()});
+  dots.forEach((dot,i)=>dot.addEventListener('click',()=>{showSlide(i);restart()}));
+  carousel.addEventListener('mouseenter',()=>clearInterval(timer));
+  carousel.addEventListener('mouseleave',restart);
+  carousel.addEventListener('focusin',()=>clearInterval(timer));
+  carousel.addEventListener('focusout',()=>{setTimeout(()=>{if(!carousel.contains(document.activeElement))restart()},0)});
+  document.addEventListener('visibilitychange',restart);
+  document.querySelectorAll('.hero-slide img[data-fallback]').forEach(img=>{
+    img.addEventListener('error',function(){if(this.dataset.fallback){this.src=this.dataset.fallback;delete this.dataset.fallback}});
+  });
+  showSlide(0);
+  restart();
 })();
 </script></body></html>
